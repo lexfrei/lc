@@ -1,6 +1,9 @@
 package leetcode
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 type ListNode struct {
 	Val  int
@@ -8,7 +11,7 @@ type ListNode struct {
 }
 
 // twoSum returns the indices of two numbers such that they add up to a specific target.
-// You may assume that each input would have exactly one solution, and you may not use the same element twice.
+//
 // Problem number: 1
 // URL: https://leetcode.com/problems/two-sum/
 func twoSum(nums []int, target int) []int {
@@ -24,7 +27,7 @@ func twoSum(nums []int, target int) []int {
 }
 
 // isPalindrome returns true if x is a palindrome.
-// An integer is a palindrome when it reads the same backward as forward.
+//
 // Problem number: 9
 // URL: https://leetcode.com/problems/palindrome-number/
 func isPalindrome(x int) bool {
@@ -49,20 +52,9 @@ func isPalindrome(x int) bool {
 }
 
 // romanToInt converts a roman numeral to an integer.
+//
 // Problem number: 13
 // URL: https://leetcode.com/problems/roman-to-integer/
-//
-// I	1
-// V	5
-// X	10
-// L	50
-// C	100
-// D	500
-// M	1000
-//
-// I can be placed before V (5) and X (10) to make 4 and 9.
-// X can be placed before L (50) and C (100) to make 40 and 90.
-// C can be placed before D (500) and M (1000) to make 400 and 900.
 func romanToInt(s string) int {
 	romanToIntMap := map[byte]int{
 		'I': 1,
@@ -85,4 +77,28 @@ func romanToInt(s string) int {
 	}
 
 	return result
+}
+
+// longestCommonPrefix finds the longest common prefix string amongst an array of strings.
+//
+// Problem number: 14
+// URL: https://leetcode.com/problems/longest-common-prefix/
+func longestCommonPrefix(strs []string) string {
+	var prefix string
+
+	for position := 1; true; position++ {
+		if len(prefix)+1 > len(strs[0]) {
+			return prefix
+		}
+
+		prefix = strs[0][0:position]
+
+		for wordIndex := range strs {
+			if !strings.HasPrefix(strs[wordIndex], prefix) {
+				return prefix[:len(prefix)-1]
+			}
+		}
+	}
+
+	return prefix
 }
