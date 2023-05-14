@@ -116,7 +116,7 @@ func isValid(s string) bool {
 			s = strings.ReplaceAll(s, "[]", "")
 			s = strings.ReplaceAll(s, "{}", "")
 		} else {
-			return false
+			return s == ""
 		}
 	}
 }
