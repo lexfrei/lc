@@ -102,3 +102,21 @@ func longestCommonPrefix(strs []string) string {
 
 	return prefix
 }
+
+// isValid returns true if the input string is valid.
+//
+// Problem number: 20
+// URL: https://leetcode.com/problems/valid-parentheses/
+//
+// This is not actual solution, but it works and makes me laugh.
+func isValid(s string) bool {
+	for {
+		if strings.Contains(s, "()") || strings.Contains(s, "[]") || strings.Contains(s, "{}") {
+			s = strings.ReplaceAll(s, "()", "")
+			s = strings.ReplaceAll(s, "[]", "")
+			s = strings.ReplaceAll(s, "{}", "")
+		} else {
+			return false
+		}
+	}
+}
