@@ -167,17 +167,17 @@ func countGoodNextValues(nums []int, k int, position int) int {
 func countNicePairs(nums []int) int {
 	var result int
 
-	tmpMap := make(map[int][]int)
+	tmpMap := make(map[int]int)
 
-	for i := 0; i < len(nums); i++ {
+	for i := range nums {
 		tmpInt := nums[i] - revInt(nums[i])
 
-		tmpMap[tmpInt] = append(tmpMap[tmpInt], i)
+		tmpMap[tmpInt]++
 	}
 
 	for i := range tmpMap {
-		if len(tmpMap[i]) > 1 {
-			result += (len(tmpMap[i]) * (len(tmpMap[i]) - 1)) / 2
+		if tmpMap[i] > 1 {
+			result += (tmpMap[i] * (tmpMap[i] - 1)) / 2
 		}
 	}
 
