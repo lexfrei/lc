@@ -1,6 +1,8 @@
 package leetcode
 
 import (
+	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -119,4 +121,124 @@ func isValid(s string) bool {
 			return s == ""
 		}
 	}
+}
+
+func maxFrequency(nums []int, k int) int {
+	sort.Ints(nums)
+
+	if len(nums) == 1 {
+		return 1
+	}
+
+	var maxFreq int = 0
+
+	for i := 0; i < len(nums); i++ {
+		curFreq := countGoodNextValues(nums, k, i)
+		if curFreq > maxFreq {
+			maxFreq = curFreq
+		}
+	}
+
+	return maxFreq
+}
+
+func countGoodNextValues(nums []int, k int, position int) int {
+	var counter int
+
+	maxValue := nums[position] + k
+
+	for i := position; i < len(nums); i++ {
+		_ = nums[i]
+		if nums[i] <= maxValue {
+			counter++
+
+			fmt.Printf("%d\tis counted, coz it's more than %d, and less than %d\n", nums[position], nums[i], maxValue)
+
+		} else {
+			break
+		}
+	}
+
+	return counter
+}
+
+// Problem 1814
+// https://leetcode.com/problems/count-nice-pairs-in-an-array/
+func countNicePairs(nums []int) int {
+	var result int
+
+	tmpMap := make(map[int][]int)
+
+	for i := 0; i < len(nums); i++ {
+		tmpInt := nums[i] - revInt(nums[i])
+
+		tmpMap[tmpInt] = append(tmpMap[tmpInt], i)
+	}
+
+	for i := range tmpMap {
+		if len(tmpMap[i]) > 1 {
+			result += (len(tmpMap[i]) * (len(tmpMap[i]) - 1)) / 2
+		}
+	}
+
+	return result % int(1e9+7)
+}
+
+func revInt(num int) int {
+	var res int
+
+	for num > 0 {
+		res = (res * 10) + num%10
+		num /= 10
+	}
+
+	return res
+}
+
+// Problem 1887
+// https://leetcode.com/problems/reduction-operations-to-make-the-array-elements-equal/
+func reductionOperations(nums []int) int {
+	sort.Ints(nums)
+
+	var result int
+
+	for i := len(nums) - 1; i > 0; i-- {
+		if nums[i] != nums[i-1] {
+			result += len(nums) - i
+		}
+	}
+
+	return result
+}
+
+// Problem 2391
+// https://leetcode.com/problems/minimum-amount-of-time-to-collect-garbage/
+func garbageCollection(garbage []string, travel []int) int {
+	var result, count int
+
+	gTypes := []string{"P", "G", "M"}
+
+	for typeN := range gTypes {
+		var tmpRes int
+
+		count = strings.Count(garbage[0], gTypes[typeN])
+
+		if count > 0 {
+			result += count
+		}
+
+		for i := 1; i < len(garbage); i++ {
+			tmpRes += travel[i-1]
+
+			count = strings.Count(garbage[i], gTypes[typeN])
+
+			if count > 0 {
+				result += count + tmpRes
+				tmpRes = 0
+			}
+
+		}
+	}
+
+	return result
 }
